@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+{% block title %}Admin Panel{% endblock %}
+{% block content %}
+<h3 class="mb-4">Admin Dashboard</h3>
+
+<div class="row g-3 mb-4">
+  <div class="col-md-4"><div class="card-progress"><div class="card-body">
+    <h6>Total Requests</h6><h2>{{ total }}</h2></div></div></div>
+  <div class="col-md-4"><div class="card-progress"><div class="card-body">
+    <h6>Open Cases</h6><h2>{{ open_count }}</h2></div></div></div>
+  <div class="col-md-4"><div class="card-progress"><div class="card-body">
+    <h6>Resolved</h6><h2>{{ resolved }}</h2></div></div></div>
+</div>
+
+<div class="card mb-4">
+  <div class="card-body">
+    <h5>📊 Requests by Category</h5>
+    <div class="d-flex flex-wrap gap-3 mt-2">
+      {% for cat, cnt in by_category.items() %}
+        <span class="badge bg-secondary fs-6">{{ cat }}: {{ cnt }}</span>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+
+<h5>All Requests</h5>
+<div class="table-responsive">
+<table class="table table-hover align-middle">
+  <thead class="table-light">
+    <tr><th>Ticket</th><th>Citizen</th><th>Category</th><th>Location</th><th>Priority</th><th>Status</th><th>Actions</th></tr>
+  </thead>
+  <tbody>
+  {% for r in requests %}
+    <tr>
+      <td><code>{{ r.ticket_no }}</code></td>
+      <td>{{ r.citizen.name }}</td>
+      <td>{{ r.category }}</td>
+      <td>{{ r.location }}</td>
+      <td><span class="badge bg-secondary">{{ r.priority }}</span></td>
+      <td>
+        {% if r.status == 'Pending' %}<span class="badge bg-warning text-dark">Pending</span>
+        {% elif r.status == 'In Progress' %}<span class="badge bg-info text-dark">In Progress</span>
+        {% else %}<span class="badge bg-success">Resolved</span>{% endif %}
+      </td>
+      <td>
+        <button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#m{{ r.id }}">Update</button>
+        <a href="{{ url_for('track_request', ticket_no=r.ticket_no) }}" class="btn btn-sm btn-outline-secondary">View</a>
+      </td>
+    </tr>
+
+    <!-- Update Modal -->
+    <div class="modal fade" id="m{{ r.id }}">
+      <div class="modal-dialog">
+        <form class="modal-content" method="POST" action="{{ url_for('update_status', req_id=r.id) }}">
+          <div class="modal-header"><h5 class="modal-title">Update {{ r.ticket_no }}</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>
+          <div class="modal-body">
+            <label class="form-label">Status</label>
+            <select name="status" class="form-select mb-3">
+              <option {% if r.status=='Pending' %}selected{% endif %}>Pending</option>
+              <option {% if r.status=='In Progress' %}selected{% endif %}>In Progress</option>
+              <option {% if r.status=='Resolved' %}selected{% endif %}>Resolved</option>
+            </select>
+            <label class="form-label">Admin Comment</label>
+            <textarea name="comment" class="form-control" rows="3">{{ r.admin_comment }}</textarea>
+          </div>
+          <div class="modal-footer">
+            <button class="btn btn-primary">Save</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  {% endfor %}
+  </tbody>
+</table>
+</div>
+{% endblock %}

@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% block title %}Home{% endblock %}
+{% block content %}
+
+<!-- This creates a dark overlay over the background image so white text is readable -->
+<div class="text-center py-5" style="background-color: rgba(0, 0, 0, 0.6); border-radius: 15px; margin-top: 50px; padding: 50px 20px; color: white;">
+  <h1 class="display-5 fw-bold">Report Public Issues Easily</h1>
+  <p class="lead">Broken streetlights? Water leaks? Garbage? Let us know.</p>
+  {% if not current_user.is_authenticated %}
+    <a href="{{ url_for('register') }}" class="btn btn-warning btn-lg me-2 text-dark fw-bold">Get Started</a>
+    <a href="{{ url_for('login') }}" class="btn btn-outline-light btn-lg">Login</a>
+  {% endif %}
+</div>
+
+<!-- The Cards -->
+<div class="row g-4 mt-4">
+  <div class="col-md-4">
+    <div class="card h-100 shadow">
+      <div class="card-body">
+        <h5 class="card-title">📝 Submit</h5>
+        <p class="card-text">Report any public service issue with details and photos.</p>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="card h-100 shadow">
+      <div class="card-body">
+        <h5 class="card-title">📊 Track</h5>
+        <p class="card-text">Monitor the status of your request in real time.</p>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="card h-100 shadow">
+      <div class="card-body">
+        <h5 class="card-title">✅ Resolved</h5>
+        <p class="card-text">Get updates from admins when your issue is fixed.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- The Track Request Form -->
+<div class="card mt-5 shadow" style="background-color: rgba(255, 255, 255, 0.95);">
+  <div class="card-body">
+    <h5>🔎 Track a Request (No login required)</h5>
+    <form action="" onsubmit="event.preventDefault(); window.location='/track/'+document.getElementById('tk').value;">
+      <div class="input-group mt-2">
+        <input id="tk" class="form-control" placeholder="Enter Ticket No (e.g., PSR-20240101010101)">
+        <button class="btn btn-primary">Track</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+{% endblock %}

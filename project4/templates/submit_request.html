@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% block title %}Submit Request{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-md-7">
+    <div class="card shadow-sm">
+      <div class="card-body">
+        <h3 class="mb-3">Submit a New Request</h3>
+        <form method="POST" enctype="multipart/form-data">
+          <div class="mb-3">
+            <label class="form-label">Category</label>
+            <select name="category" class="form-select" required>
+              <option value="Streetlight">💡 Streetlight</option>
+              <option value="Water">💧 Water Issue</option>
+              <option value="Garbage">🗑️ Garbage Collection</option>
+              <option value="Road">🛣️ Road Damage</option>
+              <option value="Other">📌 Other</option>
+            </select>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Location</label>
+            <input name="location" class="form-control" placeholder="e.g., 4th Street, Ward 5" required>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Description</label>
+            <textarea name="description" rows="4" class="form-control" required></textarea>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Priority</label>
+            <select name="priority" class="form-select">
+              <option>Low</option>
+              <option selected>Medium</option>
+              <option>High</option>
+            </select>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Photo (optional)</label>
+            <input type="file" name="image" class="form-control" accept="image/*">
+          </div>
+          <button class="btn btn-primary w-100">Submit Request</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
